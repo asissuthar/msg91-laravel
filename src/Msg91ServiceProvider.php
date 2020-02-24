@@ -13,7 +13,7 @@ class Msg91ServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->publishes([
                 __DIR__.'/../config/msg91.php' => config_path('msg91.php'),
-            ], 'passport-config');
+            ], 'msg91-config');
         }
     }
 
@@ -23,7 +23,7 @@ class Msg91ServiceProvider extends ServiceProvider
             $this->mergeConfigFrom(__DIR__ . '/../config/msg91.php', 'msg91');
         }
         
-        // Bind Nexmo Client in Service Container.
+        // Bind Msg91 OTP Client in Service Container.
         $this->app->singleton(OTPClient::class, function ($app) {
             return $this->createOTPClient($app['config']);
         });
