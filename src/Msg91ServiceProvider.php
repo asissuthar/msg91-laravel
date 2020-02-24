@@ -13,17 +13,17 @@ class Msg91ServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__.'/../config/msg91.php' => config_path('msg91.php'),
+                __DIR__ . '/../config/msg91.php' => config_path('msg91.php'),
             ], 'msg91-config');
         }
     }
 
     public function register()
     {
-        if (! $this->app->configurationIsCached()) {
+        if (!$this->app->configurationIsCached()) {
             $this->mergeConfigFrom(__DIR__ . '/../config/msg91.php', 'msg91');
         }
-        
+
         // Bind Msg91 OtpClient in Service Container.
         $this->app->singleton(OTPClient::class, function ($app) {
             return $this->createOtpClient($app['config']);
@@ -72,7 +72,7 @@ class Msg91ServiceProvider extends ServiceProvider
 
     protected function msg91ConfigHasNo($key)
     {
-        return ! $this->msg91ConfigHas($key);
+        return !$this->msg91ConfigHas($key);
     }
 
     protected function msg91ConfigHas($key)
@@ -80,14 +80,14 @@ class Msg91ServiceProvider extends ServiceProvider
         /** @var Config $config */
         $config = $this->app->make(Config::class);
 
-        if (! $config->has('msg91')) {
+        if (!$config->has('msg91')) {
             return false;
         }
 
         return
-            $config->has('msg91.'.$key) &&
-            ! is_null($config->get('msg91.'.$key)) &&
-            ! empty($config->get('msg91.'.$key));
+            $config->has('msg91.' . $key) &&
+            !is_null($config->get('msg91.' . $key)) &&
+            !empty($config->get('msg91.' . $key));
     }
 
     protected function raiseRunTimeException($message)

@@ -2,10 +2,10 @@
 
 namespace Msg91\Laravel\Facade;
 
-use Msg91\OTPClient;
+use Msg91\OtpClient;
 use Illuminate\Support\Facades\Facade;
 
-class Msg91 extends Facade
+class Msg91Otp extends Facade
 {
     /**
      * Get the registered name of the component.
@@ -16,6 +16,6 @@ class Msg91 extends Facade
      */
     protected static function getFacadeAccessor()
     {
-        return OTPClient::class;
+        return OtpClient::class;
     }
 }
