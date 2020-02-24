@@ -2,7 +2,8 @@
 
 namespace Msg91\Laravel;
 
-use Msg91\OTPClient;
+use Msg91\OtpClient;
+use Msg91\SmsClient;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Contracts\Config\Repository as Config;
 
@@ -23,9 +24,14 @@ class Msg91ServiceProvider extends ServiceProvider
             $this->mergeConfigFrom(__DIR__ . '/../config/msg91.php', 'msg91');
         }
         
-        // Bind Msg91 OTP Client in Service Container.
+        // Bind Msg91 OtpClient in Service Container.
         $this->app->singleton(OTPClient::class, function ($app) {
-            return $this->createOTPClient($app['config']);
+            return $this->createOtpClient($app['config']);
+        });
+
+        // Bind Msg91 SmsClient in Service Container.
+        $this->app->singleton(SmsClient::class, function ($app) {
+            return $this->createSmsClient($app['config']);
         });
     }
 
@@ -34,7 +40,7 @@ class Msg91ServiceProvider extends ServiceProvider
         return [OTPClient::class];
     }
 
-    protected function createOTPClient(Config $config)
+    protected function createOtpClient(Config $config): OtpClient
     {
         if (!$this->hasMsg91ConfigSection()) {
             $this->raiseRunTimeException('Missing msg91 configuration section.');
@@ -43,7 +49,19 @@ class Msg91ServiceProvider extends ServiceProvider
         // Get Client Options.
         $options = array_diff_key($config->get('msg91'), ['auth_key', 'template_id']);
 
-        return new OTPClient($options['auth_key'], $options['template_id']);
+        return new OtpClient($options['auth_key'], $options['template_id']);
+    }
+
+    protected function createSmsClient(Config $config)
+    {
+        if (!$this->hasMsg91ConfigSection()) {
+            $this->raiseRunTimeException('Missing msg91 configuration section.');
+        }
+
+        // Get Client Options.
+        $options = array_diff_key($config->get('msg91'), ['auth_key', 'sender']);
+
+        return new SmsClient($options['auth_key'], $options['sender']);
     }
 
     protected function hasMsg91ConfigSection()
