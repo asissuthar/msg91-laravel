@@ -1,5 +1,6 @@
 {
     "name": "asissuthar/msg91-laravel",
+    "description": "Laravel package for using Msg91's API.",
     "type": "library",
     "license": "MIT",
     "authors": [
