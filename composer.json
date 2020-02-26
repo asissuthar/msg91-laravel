@@ -11,9 +11,9 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "asissuthar/msg91-php": "dev-master",
         "php": "^7.2",
-        "illuminate/support": "^6.16"
+        "illuminate/support": "^6.16",
+        "asissuthar/msg91-php": "^1.0"
     },
     "autoload": {
         "psr-4": {
